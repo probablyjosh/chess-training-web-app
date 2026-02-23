@@ -1,0 +1,167 @@
+.dashboard-container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #e5e0d8;
+  margin: 0 0 0.5rem;
+}
+
+.dashboard-subtitle {
+  color: #a69e93;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.dashboard-card {
+  background: #262626;
+  border: 1px solid #3a3632;
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.rating-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.rating-label {
+  font-size: 0.85rem;
+  color: #7a7268;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rating-number {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #e5e0d8;
+  line-height: 1;
+}
+
+.recent-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.recent-label {
+  font-size: 0.8rem;
+  color: #7a7268;
+}
+
+.recent-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-correct {
+  background: #6b8f71;
+}
+
+.dot-incorrect {
+  background: #b5694d;
+}
+
+.stats-line {
+  font-size: 0.85rem;
+  color: #a69e93;
+  margin-bottom: 1.5rem;
+}
+
+.engine-loading {
+  color: #c9a84c;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.start-btn {
+  background: #8b7d6b;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s, transform 0.1s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.start-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.reset-section {
+  margin-top: 0.5rem;
+}
+
+.reset-link {
+  background: none;
+  border: none;
+  color: #7a7268;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.reset-link:hover {
+  color: #a69e93;
+}
+
+.reset-confirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  color: #a69e93;
+}
+
+.reset-yes {
+  background: rgba(181, 105, 77, 0.15);
+  border: 1px solid rgba(181, 105, 77, 0.3);
+  color: #b5694d;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.reset-no {
+  background: transparent;
+  border: 1px solid #3a3632;
+  color: #a69e93;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}

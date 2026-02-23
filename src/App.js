@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+import React from 'react';
+import { TrainingProvider, useTraining } from './context/TrainingContext';
+import TrainingDashboard from './components/TrainingDashboard';
+import TrainingBoard from './components/TrainingBoard';
 import './App.css';
+
+function AppContent() {
+  const { status } = useTraining();
+
+  if (status === 'dashboard') {
+    return <TrainingDashboard />;
+  }
+  return <TrainingBoard />;
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TrainingProvider>
+      <main className="app-shell">
+        <AppContent />
+      </main>
+    </TrainingProvider>
   );
 }
 
