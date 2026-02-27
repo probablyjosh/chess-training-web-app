@@ -1,0 +1,181 @@
+.bf-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  position: relative;
+  min-height: 100vh;
+}
+
+.bf-topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.bf-back {
+  background: none;
+  border: none;
+  color: #8b7d6b;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+
+.bf-back:hover {
+  color: #e5e0d8;
+}
+
+.bf-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #e5e0d8;
+}
+
+.bf-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bf-status {
+  text-align: center;
+}
+
+.bf-orientation {
+  color: #a69e93;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.bf-orientation strong {
+  color: #e5e0d8;
+}
+
+.bf-thinking {
+  color: #c9a84c;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+}
+
+.bf-history {
+  background: #262626;
+  border: 1px solid #3a3632;
+  border-radius: 12px;
+  padding: 1.2rem;
+  min-height: 200px;
+}
+
+.bf-history-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #7a7268;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.8rem;
+}
+
+.bf-history-empty {
+  color: #5a5249;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.bf-moves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.5rem;
+  font-size: 1rem;
+}
+
+.bf-move {
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.bf-move-white {
+  color: #e5e0d8;
+}
+
+.bf-move-black {
+  color: #a69e93;
+}
+
+.bf-move-num {
+  color: #5a5249;
+  margin-right: 0.15rem;
+}
+
+.bf-voice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bf-mic-btn {
+  background: #8b7d6b;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s, transform 0.1s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.bf-mic-btn:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.bf-mic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bf-mic-active {
+  background: #b5694d;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.bf-heard {
+  color: #7a7268;
+  font-size: 0.8rem;
+  margin: 0;
+  font-style: italic;
+}
+
+.bf-feedback {
+  color: #a69e93;
+  font-size: 0.85rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.bf-resign {
+  background: transparent;
+  border: 1px solid #3a3632;
+  color: #7a7268;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  align-self: center;
+}
+
+.bf-resign:hover {
+  border-color: #b5694d;
+  color: #b5694d;
+}

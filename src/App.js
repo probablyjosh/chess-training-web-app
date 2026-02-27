@@ -1,23 +1,27 @@
 import React from 'react';
 import { TrainingProvider, useTraining } from './context/TrainingContext';
-import TrainingDashboard from './components/TrainingDashboard';
+import HomeScreen from './components/HomeScreen';
+import CategoryScreen from './components/CategoryScreen';
 import TrainingBoard from './components/TrainingBoard';
+import BlindfoldBoard from './components/BlindfoldBoard';
 import './App.css';
 
-function AppContent() {
-  const { status } = useTraining();
+function AppContentWrapper() {
+  const { screen, currentChallenge } = useTraining();
 
-  if (status === 'dashboard') {
-    return <TrainingDashboard />;
-  }
-  return <TrainingBoard />;
+  if (screen === 'home') return <HomeScreen />;
+  if (screen === 'category') return <CategoryScreen />;
+  if (screen === 'blindfold-playing') return <BlindfoldBoard />;
+  if (screen === 'result' && currentChallenge?._category === 'blindfold') return <BlindfoldBoard />;
+  if (screen === 'playing' || screen === 'result') return <TrainingBoard />;
+  return <HomeScreen />;
 }
 
 function App() {
   return (
     <TrainingProvider>
       <main className="app-shell">
-        <AppContent />
+        <AppContentWrapper />
       </main>
     </TrainingProvider>
   );

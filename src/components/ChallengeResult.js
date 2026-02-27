@@ -3,45 +3,44 @@ import { useTraining } from '../context/TrainingContext';
 import './ChallengeResult.css';
 
 const OUTCOME_CONFIG = {
-  win:       { icon: '🏆', label: 'Victory',   cssClass: 'result-win', positive: true },
-  loss:      { icon: '💀', label: 'Defeat',    cssClass: 'result-loss', positive: false },
-  draw:      { icon: '🤝', label: 'Draw',      cssClass: 'result-draw', positive: false },
-  correct:   { icon: '✓',  label: 'Correct!',  cssClass: 'result-correct', positive: true },
-  incorrect: { icon: '✗',  label: 'Incorrect', cssClass: 'result-incorrect', positive: false },
+  win:  { icon: '🏆', label: 'Victory', cssClass: 'result-win', positive: true },
+  loss: { icon: '💀', label: 'Defeat',  cssClass: 'result-loss', positive: false },
+  draw: { icon: '🤝', label: 'Draw',    cssClass: 'result-draw', positive: false },
 };
 
 function ChallengeResult() {
   const {
     challengeResult,
-    playerRating,
     moveCount,
     currentChallenge,
     nextChallenge,
     retryChallenge,
-    returnToDashboard,
+    goBackToCategory,
   } = useTraining();
 
   const outcome = challengeResult?.outcome;
-  const config = OUTCOME_CONFIG[outcome] || OUTCOME_CONFIG.incorrect;
+  const config = OUTCOME_CONFIG[outcome] || OUTCOME_CONFIG.loss;
+  const isCheckmate = currentChallenge?._category === 'checkmates';
+  const isEndgameWithPool = currentChallenge?._category === 'endgames' && currentChallenge?._endgamePool;
+  const isBlindfoldWithPool = currentChallenge?._category === 'blindfold' && currentChallenge?._blindfoldPool;
 
-  // Auto-advance on correct/win after a short delay
+  // Auto-advance on win for checkmate puzzles
   useEffect(() => {
-    if (!challengeResult || !config.positive) return;
+    if (!challengeResult || !config.positive || !isCheckmate) return;
     const timer = setTimeout(() => nextChallenge(), 800);
     return () => clearTimeout(timer);
-  }, [challengeResult, config.positive, nextChallenge]);
+  }, [challengeResult, config.positive, isCheckmate, nextChallenge]);
 
   if (!challengeResult) return null;
 
-  const { message, ratingChange, previousRating } = challengeResult;
-  const isEndgamePlay = currentChallenge?.type === 'endgamePlay';
+  const { message } = challengeResult;
 
-  // For wins/correct, show a brief flash instead of full overlay
-  if (config.positive) {
+  // For checkmate wins, show a brief flash then auto-advance
+  if (config.positive && isCheckmate) {
     return (
       <div className="result-flash">
         <span className="flash-icon">{config.icon}</span>
-        <span className="flash-delta delta-positive">+{ratingChange}</span>
+        <span className="flash-label">Correct!</span>
       </div>
     );
   }
@@ -53,27 +52,29 @@ function ChallengeResult() {
         <h2 className="result-label">{config.label}</h2>
         <p className="result-message">{message}</p>
 
-        {isEndgamePlay && outcome === 'win' && moveCount > 0 && (
+        {config.positive && moveCount > 0 && (
           <p className="result-moves">
             Completed in {moveCount} move{moveCount !== 1 ? 's' : ''}
           </p>
         )}
 
-        <div className="rating-change-display">
-          <span className="prev-rating">{previousRating}</span>
-          <span className={`rating-delta ${ratingChange >= 0 ? 'delta-positive' : 'delta-negative'}`}>
-            {ratingChange >= 0 ? '+' : ''}{ratingChange}
-          </span>
-          <span className="new-rating">{playerRating}</span>
-        </div>
-
         <div className="result-actions">
           <button className="btn btn-primary" onClick={retryChallenge}>
             Retry
           </button>
-          <button className="btn btn-secondary" onClick={nextChallenge}>
-            Next Challenge
-          </button>
+          {isCheckmate ? (
+            <button className="btn btn-secondary" onClick={nextChallenge}>
+              Next Puzzle
+            </button>
+          ) : isEndgameWithPool || isBlindfoldWithPool ? (
+            <button className="btn btn-secondary" onClick={nextChallenge}>
+              Next Position
+            </button>
+          ) : (
+            <button className="btn btn-secondary" onClick={goBackToCategory}>
+              Back to List
+            </button>
+          )}
         </div>
       </div>
     </div>

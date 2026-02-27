@@ -42,6 +42,15 @@
   color: #e5e0d8;
 }
 
+.challenge-source {
+  font-size: 0.8rem;
+  color: #a69e93;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
 .player-color {
   font-size: 0.8rem;
   color: #a69e93;

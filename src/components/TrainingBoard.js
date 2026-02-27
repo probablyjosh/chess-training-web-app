@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { useTraining } from '../context/TrainingContext';
+import { getCheckmatePool } from '../data/contentPool';
 import ChallengeResult from './ChallengeResult';
 import './TrainingBoard.css';
 
@@ -13,15 +14,13 @@ const PROMOTION_PIECES = [
 
 function TrainingBoard() {
   const {
-    status,
+    screen,
     currentChallenge,
     fen,
     isEngineThinking,
-    playerRating,
-    recentResults,
     makeMove,
     resign,
-    returnToDashboard,
+    goBackToCategory,
   } = useTraining();
 
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -29,8 +28,30 @@ function TrainingBoard() {
   const [pendingPromotion, setPendingPromotion] = useState(null);
 
   const boardOrientation = currentChallenge?.playerColor || 'white';
-  const isSolved = status === 'result';
+  const isSolved = screen === 'result';
   const disabled = isEngineThinking || isSolved;
+
+  // Build info label
+  let infoLabel = '';
+  let sourceLabel = '';
+  if (currentChallenge?._category === 'checkmates' && currentChallenge._subcategory) {
+    const pool = getCheckmatePool(currentChallenge._subcategory);
+    const idx = (currentChallenge._index || 0) + 1;
+    const levelName = currentChallenge._subcategory === 'mateIn1' ? 'Mate in 1'
+      : currentChallenge._subcategory === 'mateIn2' ? 'Mate in 2' : 'Mate in 3';
+    infoLabel = `${levelName} — Puzzle ${idx}/${pool.length}`;
+  } else if (currentChallenge?._category === 'endgames' && currentChallenge._endgameIndex != null) {
+    const idx = currentChallenge._endgameIndex + 1;
+    const total = currentChallenge._endgameTotal || '?';
+    infoLabel = `Position ${idx}/${total}`;
+  } else if (currentChallenge?.name) {
+    infoLabel = currentChallenge.name;
+  } else {
+    infoLabel = boardOrientation === 'white' ? 'White to move' : 'Black to move';
+  }
+  if (currentChallenge?.source) {
+    sourceLabel = currentChallenge.source;
+  }
 
   function isPromotionMove(from, to) {
     const fromRank = from[1];
@@ -100,23 +121,12 @@ function TrainingBoard() {
     <div className="training-container">
       {/* Top bar */}
       <div className="training-topbar">
-        <button className="back-btn" onClick={returnToDashboard}>
-          ← Dashboard
+        <button className="back-btn" onClick={goBackToCategory}>
+          ← Back
         </button>
         <div className="training-info">
-          <span className="challenge-label">
-            {boardOrientation === 'white' ? 'White to move' : 'Black to move'}
-          </span>
-        </div>
-        <div className="topbar-right">
-          <span className="topbar-rating">{playerRating}</span>
-          {recentResults.length > 0 && (
-            <div className="recent-dots-small">
-              {recentResults.map((correct, i) => (
-                <span key={i} className={`dot-sm ${correct ? 'dot-sm-correct' : 'dot-sm-incorrect'}`} />
-              ))}
-            </div>
-          )}
+          <span className="challenge-label">{infoLabel}</span>
+          {sourceLabel && <span className="challenge-source">{sourceLabel}</span>}
         </div>
       </div>
 
@@ -171,13 +181,15 @@ function TrainingBoard() {
         <div className="side-panel">
           <div className="instruction-box">
             <p className="instruction-text">
-              {boardOrientation === 'white' ? 'White' : 'Black'} to move.
+              {currentChallenge?._category === 'checkmates'
+                ? `Find the checkmate! ${boardOrientation === 'white' ? 'White' : 'Black'} to move.`
+                : `${boardOrientation === 'white' ? 'White' : 'Black'} to move. Play until checkmate.`}
             </p>
           </div>
           <button
             className="ctrl-btn resign-btn"
             onClick={resign}
-            disabled={status !== 'playing'}
+            disabled={screen !== 'playing'}
           >
             Resign
           </button>
@@ -185,7 +197,7 @@ function TrainingBoard() {
       </div>
 
       {/* Result overlay */}
-      {status === 'result' && <ChallengeResult />}
+      {screen === 'result' && <ChallengeResult />}
     </div>
   );
 }
