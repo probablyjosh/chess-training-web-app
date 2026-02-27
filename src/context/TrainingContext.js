@@ -13,16 +13,41 @@ import {
 
 const TrainingContext = createContext();
 
-// Map category to Stockfish UCI_Elo
-function getChallengeStockfishElo(category) {
-  if (category === 'checkmates') return 1500;
-  if (category === 'blindfold') return 1400;
-  return 1600; // endgames
+// Adaptive endgame difficulty (1500–1800), persisted in localStorage
+const ENDGAME_ELO_MIN = 1500;
+const ENDGAME_ELO_MAX = 1800;
+const ENDGAME_ELO_STEP = 50;
+const ENDGAME_ELO_DEFAULT = 1650;
+
+function loadEndgameElo() {
+  try {
+    const val = parseInt(localStorage.getItem('endgameElo'), 10);
+    if (val >= ENDGAME_ELO_MIN && val <= ENDGAME_ELO_MAX) return val;
+  } catch {}
+  return ENDGAME_ELO_DEFAULT;
 }
 
 export function TrainingProvider({ children }) {
   // Progress (persisted)
   const [progress, setProgress] = useState(() => loadProgress());
+
+  // Adaptive endgame ELO (persisted)
+  const endgameEloRef = useRef(loadEndgameElo());
+
+  function getStockfishElo(category) {
+    if (category === 'checkmates') return 1500;
+    if (category === 'blindfold') return 1400;
+    return endgameEloRef.current; // adaptive 1500–1800
+  }
+
+  function adjustEndgameElo(won) {
+    const current = endgameEloRef.current;
+    const next = won
+      ? Math.min(current + ENDGAME_ELO_STEP, ENDGAME_ELO_MAX)
+      : Math.max(current - ENDGAME_ELO_STEP, ENDGAME_ELO_MIN);
+    endgameEloRef.current = next;
+    try { localStorage.setItem('endgameElo', String(next)); } catch {}
+  }
 
   // Navigation: 'home' | 'category' | 'playing' | 'blindfold-playing' | 'result'
   const [screen, setScreen] = useState('home');
@@ -101,6 +126,11 @@ export function TrainingProvider({ children }) {
       });
     }
 
+    // Adjust adaptive endgame difficulty
+    if (challenge._category === 'endgames') {
+      adjustEndgameElo(won);
+    }
+
     setChallengeResult({ outcome, message, won });
     setScreen('result');
     setIsEngineThinking(false);
@@ -137,7 +167,7 @@ export function TrainingProvider({ children }) {
       }
     };
 
-    const sfElo = getChallengeStockfishElo(challenge._category);
+    const sfElo = getStockfishElo(challenge._category);
     engineRef.current.getBestMove(chess.fen(), sfElo, 800);
   }, [handleGameOver]);
 
