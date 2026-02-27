@@ -163,6 +163,12 @@
   font-weight: 600;
 }
 
+.bf-controls {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
 .bf-resign {
   background: transparent;
   border: 1px solid #3a3632;
@@ -172,10 +178,25 @@
   font-size: 0.9rem;
   cursor: pointer;
   font-family: inherit;
-  align-self: center;
 }
 
 .bf-resign:hover {
   border-color: #b5694d;
   color: #b5694d;
+}
+
+.bf-skip {
+  background: transparent;
+  border: 1px solid #3a3632;
+  color: #7a7268;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.bf-skip:hover {
+  border-color: #8b7d6b;
+  color: #e5e0d8;
 }

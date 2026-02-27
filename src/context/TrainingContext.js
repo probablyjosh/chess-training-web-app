@@ -194,19 +194,17 @@ export function TrainingProvider({ children }) {
 
   function startEndgameCategory(categoryName, positions) {
     if (!positions || positions.length === 0) return;
-    // Find first uncompleted position, or start from the beginning
-    const completedSet = new Set(progress.endgames.completed);
-    let index = positions.findIndex(p => !completedSet.has(p.id));
-    if (index === -1) index = 0; // All completed, start over
+    // Shuffle positions randomly each time
+    const shuffled = [...positions].sort(() => Math.random() - 0.5);
 
-    const pos = positions[index];
+    const pos = shuffled[0];
     const challenge = {
       ...pos,
       _category: 'endgames',
       _endgameCategory: categoryName,
-      _endgamePool: positions,
-      _endgameIndex: index,
-      _endgameTotal: positions.length,
+      _endgamePool: shuffled,
+      _endgameIndex: 0,
+      _endgameTotal: shuffled.length,
     };
     beginChallenge(challenge, 'playing');
   }
@@ -315,6 +313,13 @@ export function TrainingProvider({ children }) {
     setIsEngineThinking(false);
   }
 
+  function skipChallenge() {
+    if (screen !== 'playing' && screen !== 'blindfold-playing') return;
+    if (engineRef.current) engineRef.current.stop();
+    setIsEngineThinking(false);
+    nextChallenge();
+  }
+
   function nextChallenge() {
     const challenge = challengeRef.current;
     if (!challenge) return;
@@ -410,6 +415,7 @@ export function TrainingProvider({ children }) {
       makeMove,
       makeMoveSAN,
       resign,
+      skipChallenge,
       nextChallenge,
       retryChallenge,
       resetProgress,

@@ -20,6 +20,7 @@ function TrainingBoard() {
     isEngineThinking,
     makeMove,
     resign,
+    skipChallenge,
     goBackToCategory,
   } = useTraining();
 
@@ -186,13 +187,24 @@ function TrainingBoard() {
                 : `${boardOrientation === 'white' ? 'White' : 'Black'} to move. Play until checkmate.`}
             </p>
           </div>
-          <button
-            className="ctrl-btn resign-btn"
-            onClick={resign}
-            disabled={screen !== 'playing'}
-          >
-            Resign
-          </button>
+          <div className="ctrl-buttons">
+            <button
+              className="ctrl-btn resign-btn"
+              onClick={resign}
+              disabled={screen !== 'playing'}
+            >
+              Resign
+            </button>
+            {(currentChallenge?._endgamePool || currentChallenge?._blindfoldPool) && (
+              <button
+                className="ctrl-btn skip-btn"
+                onClick={skipChallenge}
+                disabled={screen !== 'playing'}
+              >
+                Skip →
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

@@ -231,6 +231,23 @@
   background: rgba(181, 105, 77, 0.08);
 }
 
+.ctrl-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skip-btn {
+  background: transparent;
+  border: 1px solid rgba(139, 125, 107, 0.3);
+  color: #a69e93;
+}
+
+.skip-btn:hover:not(:disabled) {
+  background: rgba(139, 125, 107, 0.08);
+  color: #e5e0d8;
+}
+
 /* Responsive */
 @media (max-width: 680px) {
   .training-layout {

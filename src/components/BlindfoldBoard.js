@@ -13,6 +13,7 @@ function BlindfoldBoard() {
     goHome,
     makeMoveSAN,
     resign,
+    skipChallenge,
   } = useTraining();
 
   const [listening, setListening] = useState(false);
@@ -188,11 +189,16 @@ function BlindfoldBoard() {
           )}
         </div>
 
-        {/* Resign */}
+        {/* Resign / Skip */}
         {!isSolved && (
-          <button className="bf-resign" onClick={resign}>
-            Resign
-          </button>
+          <div className="bf-controls">
+            <button className="bf-resign" onClick={resign}>
+              Resign
+            </button>
+            <button className="bf-skip" onClick={skipChallenge}>
+              Skip →
+            </button>
+          </div>
         )}
       </div>
 
