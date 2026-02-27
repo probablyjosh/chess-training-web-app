@@ -11,6 +11,8 @@ export const MATE_IN_3_POOL = [...MATE_IN_3].sort((a, b) => a.rating - b.rating)
 // Endgame positions grouped by category
 export const ENDGAME_PAWN = ENDGAME_POSITIONS.filter(p => p.category === 'Pawn Endgames');
 export const ENDGAME_ROOK = ENDGAME_POSITIONS.filter(p => p.category === 'Rook Endgames');
+export const ENDGAME_ROOK_BASIC = ENDGAME_POSITIONS.filter(p => p.subcategory === 'krp_vs_kr');
+export const ENDGAME_ROOK_ADVANCED = ENDGAME_POSITIONS.filter(p => p.subcategory === 'rook_ending');
 export const ENDGAME_QUEEN = ENDGAME_POSITIONS.filter(p => p.category === 'Queen Endgames');
 export const ALL_ENDGAME_POSITIONS = ENDGAME_POSITIONS;
 

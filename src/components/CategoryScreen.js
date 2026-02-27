@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTraining } from '../context/TrainingContext';
-import { getCheckmatePool, ENDGAME_PAWN, ENDGAME_ROOK, ENDGAME_QUEEN } from '../data/contentPool';
+import { getCheckmatePool, ENDGAME_PAWN, ENDGAME_ROOK_BASIC, ENDGAME_ROOK_ADVANCED, ENDGAME_QUEEN } from '../data/contentPool';
 import { getCheckmateProgress, isBlindfoldCompleted, getEndgameCategoryProgress } from '../services/progressTracker';
 import './CategoryScreen.css';
 
@@ -64,7 +64,8 @@ function CategoryScreen() {
   function EndgamesView() {
     const categories = [
       { key: 'Pawn Endgames', label: 'Pawn Endgames', positions: ENDGAME_PAWN },
-      { key: 'Rook Endgames', label: 'Rook Endgames', positions: ENDGAME_ROOK },
+      { key: 'Lucena & Philidor', label: 'Lucena & Philidor', positions: ENDGAME_ROOK_BASIC },
+      { key: 'Rook Endgames', label: 'Rook Endgames', positions: ENDGAME_ROOK_ADVANCED },
       { key: 'Queen Endgames', label: 'Queen Endgames', positions: ENDGAME_QUEEN },
     ];
 
